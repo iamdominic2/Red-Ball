@@ -1,0 +1,134 @@
+//----- Variables -----------------------------------------------------------------------------------------------------
+
+dad = 1
+frame = 0
+sc = 310
+Speed y = 10
+
+
+
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    Motion.SetRotationStyle(left-right);
+    Looks.Hide();
+    Call Spawn("red") At(0)(-100) Direction(-90) sc(1);
+    Call Spawn("red") At(195)(24) Direction(-90) sc(301);
+    Call Spawn("red") At(-84)(-60) Direction(90) sc(310);
+}
+
+
+//----- Broadcast received events -------------------------------------------------------------------------------------
+
+WhenBroadcastReceived(dad)
+{
+    dad = 1;
+}
+
+
+//----- Start as clone ------------------------------------------------------------------------------------------------
+
+Control.WhenIStartAsClone()
+{
+    Looks.Show();
+    Speed y = 0;
+    frame = 0;
+    dad = 1;
+    Forever
+    {
+        Looks.SwitchCostumeTo(1);
+        Motion.SetRotationStyle(don't rotate);
+        If (sc == level)
+        {
+            Call Move - Left and Right;
+            Call Move - Down;
+        }
+        frame += 0.33;
+        Looks.SwitchCostumeTo((1 + (floor(frame) % 4)));
+        Motion.SetRotationStyle(left-right);
+        Looks.SetEffectTo(GHOST, 100);
+        If ((sc == level) And (dad == 1))
+        {
+            Looks.ClearGraphicEffects();
+            Looks.SetEffectTo(BRIGHTNESS, -19);
+            If ((Invulnerable == 0) And Sensing.TouchingObject(Ball))
+            {
+                Call Touching Player;
+            }
+        }
+    }
+}
+
+
+//----- Custom blocks -------------------------------------------------------------------------------------------------
+
+Define Move - Down (warp=true)
+{
+    Speed y += -1;
+    Motion.ChangeYBy(Speed y);
+    Repeat Until (Not (Sensing.TouchingObject(Platforms)))
+    {
+        Motion.ChangeYBy(1);
+        Speed y = 0;
+    }
+}
+
+Define Move - Left and Right (warp=true)
+{
+    Motion.Move(3);
+    Repeat (4)
+    {
+        If (Not ((( Or Sensing.TouchingObject(_edge_)) Or (Sensing.TouchingObject(Moving Platforms) Or Sensing.TouchingObject(Platforms)))))
+        {
+            Stop(this script);
+        }
+        Motion.ChangeYBy(1);
+    }
+    Motion.ChangeYBy(-4);
+    Motion.Move(-3);
+    Motion.TurnRight(180);
+}
+
+Define Spawn(string type) At(string x)(string y) Direction(string dir) sc(string sc) (warp=true)
+{
+    sc = sc;
+    Motion.GoToXY(x, y);
+    Motion.PointInDirection(dir);
+    Control.CreateCloneOf(_myself_);
+}
+
+Define Touching Player (warp=false)
+{
+    If (Yv < -3)
+    {
+        Looks.SwitchCostumeTo(5);
+        Yv = 6;
+        Event.Broadcast("Player - Bounce");
+        Sound.Play(Squash);
+        Control.Wait(0.1);
+        Repeat (20)
+        {
+            Looks.ChangeEffectBy(GHOST, 5);
+        }
+        dad = 0;
+        Stop(this script);
+    }
+    Sound.Play(Oops);
+    Event.Broadcast("Reset Level");
+}
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+1.svg
+2.svg
+3.svg
+4.svg
+5.svg
+
+
+//----- Sounds --------------------------------------------------------------------------------------------------------
+
+Oops.wav
+Squash.wav

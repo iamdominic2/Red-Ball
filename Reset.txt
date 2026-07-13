@@ -1,0 +1,42 @@
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    Motion.GoToXY(225, -165);
+    hover = 0;
+    Forever
+    {
+        Looks.ClearGraphicEffects();
+        Looks.SetSizeTo(100);
+        If Sensing.TouchingObject(_mouse_)
+        {
+            Looks.SetEffectTo(COLOR, 30);
+            Looks.SetEffectTo(BRIGHTNESS, -13);
+            Looks.ChengeSizeBy(10);
+        }
+    }
+}
+
+
+//----- Sprite clicked events -----------------------------------------------------------------------------------------
+
+WhenThisSpriteClicked()
+{
+    Sound.Play(Oops);
+    Event.Broadcast("Reset Level");
+    hover = 1;
+    Looks.SetEffectTo(COLOR, 66);
+    Wait Until (Not ((Sensing.TouchingObject(_mouse_) Or Sensing.MouseDown())));
+    hover = 0;
+}
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+costume1.svg
+
+
+//----- Sounds --------------------------------------------------------------------------------------------------------
+
+Oops.wav
+pop.wav

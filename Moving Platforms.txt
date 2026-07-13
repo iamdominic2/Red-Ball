@@ -1,0 +1,381 @@
+//----- Variables -----------------------------------------------------------------------------------------------------
+
+dx = 0
+dy = 0
+id = 6
+PrevX = -20
+PrevY = -155
+r = 10
+sc = 512
+
+
+
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    List.DeleteAll(I);
+    Looks.Hide();
+    Call Spawn;
+}
+
+
+//----- Start as clone ------------------------------------------------------------------------------------------------
+
+Control.WhenIStartAsClone()
+{
+    Forever
+    {
+        If (level == sc)
+        {
+            Looks.Show();
+            Call 2c;
+        }
+        Else
+        {
+            Looks.Hide();
+        }
+        Call Tick(PrevX)(PrevY)(Motion.XPosition())(Motion.YPosition());
+        PrevX = Motion.XPosition();
+        PrevY = Motion.YPosition();
+    }
+}
+
+Control.WhenIStartAsClone()
+{
+    Forever
+    {
+        If (id == 1)
+        {
+            Motion.GlideTo(-20, -155, 2);
+            Control.Wait(1);
+            Motion.GlideTo(150, -155, 2);
+            Control.Wait(1);
+        }
+        Else
+        {
+            If (id == 2)
+            {
+                Motion.GlideTo(195, -140, 2);
+                Control.Wait(1);
+                Motion.GlideTo(195, 0, 2);
+                Control.Wait(1);
+            }
+            Else
+            {
+                If (id == 3)
+                {
+                    Motion.GlideTo(-105, 0, 1);
+                    Control.Wait(1);
+                    Motion.GlideTo(-105, 75, 1);
+                    Control.Wait(0.5);
+                }
+                Else
+                {
+                    If (id == 4)
+                    {
+                        Motion.GlideTo(0, 122, 1.2);
+                        Motion.GlideTo(0, -77, 0.2);
+                        If (level == sc)
+                        {
+                            Sound.Play(492873__roboroo__thud3);
+                        }
+                        Control.Wait(0.1);
+                    }
+                    Else
+                    {
+                        If (id == 5)
+                        {
+                            Motion.GlideTo(-133, 122, 1.2);
+                            Motion.GlideTo(-133, -77, 0.2);
+                            If (level == sc)
+                            {
+                                Sound.Play(492873__roboroo__thud3);
+                            }
+                            Control.Wait(0.2);
+                        }
+                        Else
+                        {
+                            If (id == 6)
+                            {
+                                Motion.TurnRight(r);
+                            }
+                            Else
+                            {
+                                If (id == 7)
+                                {
+                                    Motion.GlideTo(-35, 0, 1.6);
+                                    Control.Wait(1);
+                                    Motion.GlideTo(36, -154, 1.6);
+                                    Control.Wait(1);
+                                }
+                                Else
+                                {
+                                    If (id == 8)
+                                    {
+                                        Looks.SetSizeTo(145);
+                                        If (Sensing.TouchingObject(Ball) And List.ContainsItem(I, "k301"))
+                                        {
+                                            Looks.SetSizeTo(100);
+                                            Sound.Play(Buzz Whir);
+                                            Motion.GlideTo(71, -2, 0.7);
+                                            Control.Wait(1);
+                                            Sound.Play(Buzz Whir);
+                                            Motion.GlideTo(71, 71, 0.7);
+                                            Sound.Play(Crunch);
+                                            Control.Wait(1.5);
+                                        }
+                                        Else
+                                        {
+                                            If Sensing.TouchingObject(Ball)
+                                            {
+                                                Looks.SetSizeTo(100);
+                                                Sound.Play(Low Squeak);
+                                                Control.Wait(0.5);
+                                            }
+                                            Looks.SetSizeTo(100);
+                                        }
+                                    }
+                                    Else
+                                    {
+                                        If (id == 9)
+                                        {
+                                            Motion.GlideTo(-55, 27, 1.5);
+                                            Control.Wait(1);
+                                            Motion.GlideTo(-55, -100, 1.5);
+                                            Control.Wait(1);
+                                        }
+                                        Else
+                                        {
+                                            If (id == 10)
+                                            {
+                                                Motion.GlideTo(7, -74, 0.6);
+                                                Control.Wait(1);
+                                                Motion.GlideTo(7, 0, 0.6);
+                                                Control.Wait(1);
+                                            }
+                                            Else
+                                            {
+                                                If (id == 11)
+                                                {
+                                                    Motion.GlideTo(100, 24, 0.6);
+                                                    Control.Wait(1);
+                                                    Motion.GlideTo(55, -64, 0.6);
+                                                    Control.Wait(1);
+                                                }
+                                                Else
+                                                {
+                                                    If (id == 13)
+                                                    {
+                                                        Motion.GlideTo(166, -113, 1.5);
+                                                        Motion.GlideTo(-73, -113, 1.5);
+                                                    }
+                                                    Else
+                                                    {
+                                                        If (id == 14)
+                                                        {
+                                                            Motion.TurnRight(-5);
+                                                        }
+                                                        Else
+                                                        {
+                                                            If (id == 15)
+                                                            {
+                                                                Motion.GlideTo(-160, -50, 4);
+                                                                Motion.GlideTo(160, -50, 4);
+                                                            }
+                                                            Else
+                                                            {
+                                                                If (id == 16)
+                                                                {
+                                                                    Motion.GlideTo(51, 100, 2);
+                                                                    Motion.GlideTo(51, -64, 2);
+                                                                }
+                                                                Else
+                                                                {
+                                                                    If (id == 17)
+                                                                    {
+                                                                        Looks.SetEffectTo(COLOR, 160);
+                                                                        Looks.SetSizeTo(145);
+                                                                        If (Sensing.TouchingObject(Ball) And List.ContainsItem(I, "k510"))
+                                                                        {
+                                                                            Looks.SetSizeTo(100);
+                                                                            Sound.Play(Buzz Whir);
+                                                                            Motion.GlideTo(388, -124, 0.7);
+                                                                            Control.Wait(1);
+                                                                            Sound.Play(Buzz Whir);
+                                                                            Motion.GlideTo(0, -124, 0.7);
+                                                                            Sound.Play(Crunch);
+                                                                            Control.Wait(2);
+                                                                        }
+                                                                        Else
+                                                                        {
+                                                                            If Sensing.TouchingObject(Ball)
+                                                                            {
+                                                                                Looks.SetSizeTo(100);
+                                                                                Sound.Play(Low Squeak);
+                                                                                Control.Wait(0.5);
+                                                                            }
+                                                                            Looks.SetSizeTo(100);
+                                                                        }
+                                                                    }
+                                                                    Else
+                                                                    {
+                                                                        Looks.SetSizeTo(145);
+                                                                        If (Sensing.TouchingObject(Ball) And List.ContainsItem(I, "k304"))
+                                                                        {
+                                                                            Looks.SetSizeTo(100);
+                                                                            Sound.Play(Buzz Whir);
+                                                                            Motion.GlideTo(74, 32, 0.7);
+                                                                            Control.Wait(1);
+                                                                            Sound.Play(Buzz Whir);
+                                                                            Motion.GlideTo(74, 97, 0.7);
+                                                                            Sound.Play(Crunch);
+                                                                            Control.Wait(1.5);
+                                                                        }
+                                                                        Else
+                                                                        {
+                                                                            If Sensing.TouchingObject(Ball)
+                                                                            {
+                                                                                Looks.SetSizeTo(100);
+                                                                                Sound.Play(Low Squeak);
+                                                                                Control.Wait(0.5);
+                                                                            }
+                                                                            Looks.SetSizeTo(100);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+//----- Custom blocks -------------------------------------------------------------------------------------------------
+
+Define 2c (warp=true)
+{
+    Looks.SetEffectTo(BRIGHTNESS, -100);
+    Looks.SetEffectTo(GHOST, 85);
+    Motion.ChangeYBy(-10);
+    Pen.Stamp();
+    Motion.ChangeYBy(10);
+    Looks.SetEffectTo(BRIGHTNESS, 0);
+    Looks.SetEffectTo(GHOST, 0);
+}
+
+Define Rot Math CCW(string ccw) (warp=true)
+{
+    If Sensing.TouchingObject(Ball)
+    {
+        dx = (Sensing.Of(x position, Ball) - Motion.XPosition());
+        dy = (Sensing.Of(y position, Ball) - Motion.YPosition());
+        Dx Plat = (((dx * cos(ccw)) - (dy * sin(ccw))) - dx);
+        Dy Plat = (((dx * sin(ccw)) + (dy * cos(ccw))) - dy);
+    }
+}
+
+Define Spawn (warp=false)
+{
+    Call Spawn at xy(-20)(-155) scene(3) id(1) cos(1) r("");
+    Call Spawn at xy(195)(-140) scene(4) id(2) cos(1) r("");
+    Call Spawn at xy(-105)(0) scene(4) id(3) cos(1) r("");
+    Call Spawn at xy(0)(140) scene(103) id(4) cos(2) r("");
+    Control.Wait(0.36);
+    Call Spawn at xy(-80)(140) scene(103) id(5) cos(2) r("");
+    Call Spawn at xy(25)(25) scene(101) id(6) cos(3) r(2);
+    Call Spawn at xy(195)(81) scene(101) id(6) cos(3) r(-2);
+    Call Spawn at xy(38)(-154) scene(201) id(7) cos(1) r("");
+    Call Spawn at xy(71)(71) scene(202) id(8) cos(4) r("");
+    Call Spawn at xy(-55)(34) scene(202) id(9) cos(1) r("");
+    Call Spawn at xy(7)(-74) scene(203) id(10) cos(1) r("");
+    Call Spawn at xy(65)(-64) scene(204) id(11) cos(1) r("");
+    Looks.SetEffectTo(COLOR, 100);
+    Call Spawn at xy(74)(97) scene(205) id(12) cos(4) r("");
+    Looks.SetEffectTo(COLOR, 0);
+    Call Spawn at xy(0)(97) scene(206) id(4) cos(2) r("");
+    Call Spawn at xy(-73)(-113) scene(207) id(13) cos(1) r("");
+    Call Spawn at xy(152)(64) scene(307) id(14) cos(5) r(-5);
+    Call Spawn at xy(-92)(100) scene(308) id(6) cos(6) r(7);
+    Call Spawn at xy(100)(11) scene(308) id(6) cos(6) r(-4);
+    Call Spawn at xy(-160)(-50) scene(309) id(15) cos(7) r(0);
+    Call Spawn at xy(101)(31) scene(310) id(6) cos(8) r(1);
+    Call Spawn at xy(0)(31) scene(410) id(7) cos(9) r(1);
+    Call Spawn at xy(123)(17) scene(311) id(6) cos(6) r(-11);
+    Call Spawn at xy(-77)(17) scene(311) id(6) cos(6) r(11);
+    Call Spawn at xy(51)(-65) scene(411) id(16) cos(10) r(0);
+    Call Spawn at xy(0)(-124) scene(411) id(17) cos(11) r(0);
+    Call Spawn at xy(0)(0) scene(512) id(6) cos(12) r(10);
+}
+
+Define Spawn at xy(string x)(string y) scene(string scene) id(string i) cos(string c) r(string r) (warp=false)
+{
+    r = r;
+    Looks.SwitchCostumeTo(c);
+    sc = scene;
+    id = i;
+    Motion.GoToXY(x, y);
+    Control.CreateCloneOf(_myself_);
+}
+
+Define Tick(string x)(string y)(string x2)(string y2) (warp=true)
+{
+    If (r > "")
+    {
+        Looks.SetSizeTo(106);
+        Call Rot Math CCW((0 - r));
+        Looks.SetSizeTo(100);
+    }
+    Else
+    {
+        Looks.Say("");
+        Looks.ChengeSizeBy(6);
+        If Sensing.TouchingObject(Ball)
+        {
+            Dx Plat = (x2 - x);
+            Dy Plat = (y2 - y);
+        }
+        Looks.SetSizeTo(100);
+    }
+}
+
+
+//----- Orphaned blocks -----------------------------------------------------------------------------------------------
+
+( * 2);
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+Car.svg
+Car2.svg
+Door.svg
+Door Big.svg
+Line.svg
+Line2.svg
+Platform.svg
+Platform2.svg
+Spin.svg
+Spin2.svg
+Spin3.svg
+Squash.svg
+
+
+//----- Sounds --------------------------------------------------------------------------------------------------------
+
+492873__roboroo__thud3.wav
+Buzz Whir.wav
+Crunch.wav
+Low Squeak.wav
+pop.wav

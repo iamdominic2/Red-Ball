@@ -1,0 +1,68 @@
+//----- Broadcast received events -------------------------------------------------------------------------------------
+
+WhenBroadcastReceived(stamp)
+{
+    Motion.GoToXY(0, 0);
+    Looks.SwitchCostumeTo(n);
+    Looks.SwitchCostumeTo(Operator.Join("costume", level));
+    Call 1c;
+    Call 2c;
+    Looks.SetEffectTo(BRIGHTNESS, 24);
+}
+
+
+//----- Custom blocks -------------------------------------------------------------------------------------------------
+
+Define 1c (warp=true)
+{
+    Looks.SetEffectTo(BRIGHTNESS, -100);
+    Looks.SetEffectTo(GHOST, 85);
+    Motion.ChangeYBy(-5);
+    Pen.Stamp();
+    Motion.ChangeYBy(5);
+    Looks.ClearGraphicEffects();
+}
+
+Define 2c (warp=true)
+{
+    Motion.SetRotationStyle(don't rotate);
+    Looks.SetEffectTo(BRIGHTNESS, -100);
+    Repeat (8)
+    {
+        Motion.Move(3);
+        Pen.Stamp();
+        Motion.Move(-3);
+        Motion.TurnRight(45);
+    }
+    Looks.ClearGraphicEffects();
+}
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+costume0.svg
+costume1.svg
+costume2.svg
+costume3.svg
+costume4.svg
+costume101.svg
+costume104.svg
+costume201.svg
+costume204.svg
+costume205.svg
+costume207.svg
+costume301.svg
+costume302.svg
+costume304.svg
+costume307.svg
+costume309.svg
+costume311.svg
+costume411.svg
+costume510.svg
+costume511.svg
+n.svg
+
+
+//----- Sounds --------------------------------------------------------------------------------------------------------
+
+pop.wav

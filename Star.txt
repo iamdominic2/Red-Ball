@@ -1,0 +1,154 @@
+//----- Variables -----------------------------------------------------------------------------------------------------
+
+sc = 302
+T = 0
+
+
+
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    Looks.Hide();
+    Looks.SetSizeTo(50);
+    Call Spawn;
+}
+
+
+//----- Start as clone ------------------------------------------------------------------------------------------------
+
+Control.WhenIStartAsClone()
+{
+    Looks.SwitchCostumeTo(Flag);
+    Looks.Hide();
+    Control.Wait(0);
+    Repeat Until Sensing.TouchingObject(Ball)
+    {
+        Motion.ChangeYBy((sin(T) / 3));
+        If (level == sc)
+        {
+            Looks.Show();
+        }
+        Else
+        {
+            Looks.Hide();
+        }
+        T += 7;
+    }
+    Sound.Play(Costume.GetNumberName(number));
+    If (Costume.GetNumberName(number) == 2)
+    {
+        List.Add(I, Operator.Join("k", level));
+    }
+    Else
+    {
+        Stars += ((Operator.Round((1 + ((Looks.Size() / 25) - 2))) * 2) - 1);
+    }
+    Repeat (6)
+    {
+        Motion.ChangeYBy(5);
+        Looks.ChangeEffectBy(GHOST, 16);
+    }
+    Control.DeleteThisClone();
+}
+
+
+//----- Custom blocks -------------------------------------------------------------------------------------------------
+
+Define Spawn (warp=true)
+{
+    Looks.SwitchCostumeTo(star);
+    Call Spawn at xy(-108)(-55) scene(1);
+    Call Spawn at xy(100)(-69) scene(1);
+    Call Spawn at xy(5)(20) scene(2);
+    Call Spawn at xy(151)(29) scene(2);
+    Call Spawn at xy(-95)(-2) scene(3);
+    Looks.SetSizeTo(100);
+    Call Spawn at xy(32)(22) scene(3);
+    Call Spawn at xy(-168)(122) scene(102);
+    Looks.SetSizeTo(100);
+    Call Spawn at xy(54)(133) scene(305);
+    Call Spawn at xy(-21)(113) scene(0);
+    Call Spawn at xy(166)(-105) scene(0);
+    Call Spawn at xy(-11)(-100) scene(0);
+    Call Spawn at xy(90)(136) scene(0);
+    Call Spawn at xy(147)(-20) scene(206);
+    Looks.SetSizeTo(50);
+    Call Spawn at xy(106)(66) scene(4);
+    Call Spawn at xy(55)(-75) scene(104);
+    Call Spawn at xy(-110)(90) scene(104);
+    Call Spawn at xy(150)(79) scene(103);
+    Call Spawn at xy(-60)(66) scene(103);
+    Call Spawn at xy(203)(148) scene(2);
+    Call Spawn at xy(-70)(106) scene(101);
+    Call Spawn at xy(112)(2) scene(101);
+    Call Spawn at xy(-200)(-111) scene(202);
+    Looks.SwitchCostumeTo(Key);
+    Call Spawn at xy(193)(45) scene(301);
+    Looks.SwitchCostumeTo(star);
+    Call Spawn at xy(-80)(-80) scene(302);
+    Call Spawn at xy(174)(153) scene(202);
+    Call Spawn at xy(-154)(87) scene(203);
+    Looks.SwitchCostumeTo(Key);
+    Looks.SetEffectTo(COLOR, 100);
+    Call Spawn at xy(-142)(43) scene(304);
+    Looks.SetEffectTo(COLOR, 0);
+    Looks.SwitchCostumeTo(star);
+    Call Spawn at xy(-82)(40) scene(205);
+    Call Spawn at xy(-36)(116) scene(206);
+    Call Spawn at xy(-170)(40) scene(207);
+    Call Spawn at xy(-43)(51) scene(207);
+    Call Spawn at xy(191)(141) scene(207);
+    Call Spawn at xy(181)(-153) scene(203);
+    Call Spawn at xy(29)(120) scene(310);
+    Call Spawn at xy(216)(-61) scene(510);
+    Call Spawn at xy(216)(-41) scene(510);
+    Call Spawn at xy(216)(-21) scene(510);
+    Call Spawn at xy(216)(0) scene(510);
+    Call Spawn at xy(216)(21) scene(510);
+    Call Spawn at xy(216)(42) scene(510);
+    Call Spawn at xy(216)(63) scene(510);
+    Call Spawn at xy(216)(85) scene(510);
+    Call Spawn at xy(216)(105) scene(510);
+    Call Spawn at xy(216)(116) scene(510);
+    Looks.SwitchCostumeTo(Key);
+    Looks.SetEffectTo(COLOR, 170);
+    Call Spawn at xy(51)(103) scene(510);
+    Looks.SetEffectTo(COLOR, 0);
+    Looks.SetSizeTo(100);
+    Looks.SetEffectTo(COLOR, 0);
+    Looks.SwitchCostumeTo(star);
+    Call Spawn at xy(-147)(-41) scene(510);
+    Call Spawn at xy(0)(7) scene(513);
+    Call Spawn at xy(60)(7) scene(513);
+    Call Spawn at xy(-60)(7) scene(513);
+    Looks.SetSizeTo(50);
+    Looks.SetEffectTo(COLOR, 0);
+    Looks.SwitchCostumeTo(star);
+    Call Spawn at xy(-240)(-48) scene(411);
+    Call Spawn at xy(-69)(54) scene(302);
+    Looks.Show();
+    Costume.GoToFrontBack(front);
+    Looks.SwitchCostumeTo(star2);
+    Motion.GoToXY(-225, -166);
+}
+
+Define Spawn at xy(string x)(string y) scene(string scene) (warp=false)
+{
+    sc = scene;
+    Motion.GoToXY(x, y);
+    Control.CreateCloneOf(_myself_);
+}
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+Key.svg
+star.svg
+star2.svg
+
+
+//----- Sounds --------------------------------------------------------------------------------------------------------
+
+collect.wav
+Wand.wav

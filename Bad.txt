@@ -1,0 +1,72 @@
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    Motion.GoToXY(0, 0);
+}
+
+
+//----- Broadcast received events -------------------------------------------------------------------------------------
+
+WhenBroadcastReceived(stamp)
+{
+    Looks.SwitchCostumeTo(null);
+    Looks.SwitchCostumeTo(Operator.Join("costume", level));
+    Call 1;
+    Call 2;
+    Looks.SetEffectTo(BRIGHTNESS, -30);
+}
+
+
+//----- Custom blocks -------------------------------------------------------------------------------------------------
+
+Define 1 (warp=true)
+{
+    Looks.SetEffectTo(BRIGHTNESS, -100);
+    Looks.SetEffectTo(GHOST, 85);
+    Motion.ChangeYBy(-10);
+    Pen.Stamp();
+    Motion.ChangeYBy(10);
+    Looks.ClearGraphicEffects();
+}
+
+Define 2 (warp=true)
+{
+    Motion.SetRotationStyle(don't rotate);
+    Looks.SetEffectTo(BRIGHTNESS, -100);
+    Repeat (8)
+    {
+        Motion.Move(3);
+        Pen.Stamp();
+        Motion.Move(-3);
+        Motion.TurnRight(45);
+    }
+    Looks.ClearGraphicEffects();
+}
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+costume4.svg
+costume101.svg
+costume201.svg
+costume202.svg
+costume203.svg
+costume204.svg
+costume205.svg
+costume206.svg
+costume207.svg
+costume301.svg
+costume304.svg
+costume307.svg
+costume308.svg
+costume309.svg
+costume310.svg
+costume311.svg
+costume512.svg
+null.svg
+
+
+//----- Sounds --------------------------------------------------------------------------------------------------------
+
+pop.wav

@@ -1,0 +1,38 @@
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    Looks.Hide();
+}
+
+
+//----- Start as clone ------------------------------------------------------------------------------------------------
+
+Control.WhenIStartAsClone()
+{
+    Looks.Show();
+    Motion.GoTo(Ball);
+    Looks.SetSizeTo(99);
+    Repeat (6)
+    {
+        Looks.ChengeSizeBy(-8);
+        Looks.ChangeEffectBy(GHOST, 16);
+    }
+    Control.DeleteThisClone();
+}
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+costume1.svg
+costume2.svg
+
+
+//----- Sounds --------------------------------------------------------------------------------------------------------
+
+74921__robinhood76__01102-small-sword-tinkle5.wav
+blip.wav
+Hi Na Tabla.wav
+nsmbwiiKey.wav
+Oops.wav
+Win.mp3

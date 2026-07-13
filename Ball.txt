@@ -1,0 +1,336 @@
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    level = 1;
+    Check l = 1;
+    Check X = -159;
+    Check Y = -140;
+    Stars = 0;
+    Call Reset Level;
+    Control.Wait(0);
+    Forever
+    {
+        Control.CreateCloneOf(Trail);
+        Looks.SwitchCostumeTo(costume2);
+        Event.Broadcast("Tick1");
+        Event.Broadcast("Tick Platform");
+        Motion.ChangeXBy((Dx Plat * 1.5));
+        Motion.ChangeYBy((Dy Plat * 1.5));
+        If Sensing.TouchingObject(Moving Platforms)
+        {
+            Call WiddleOut(Motion.XPosition())(Motion.YPosition())(18);
+        }
+        If Sensing.TouchingObject(Bad)
+        {
+            Looks.SwitchCostumeTo(costume1);
+            Control.Wait(0);
+            Looks.SwitchCostumeTo(costume2);
+            If Sensing.TouchingObject(Bad)
+            {
+                Sound.Play(Oops);
+                Call Reset Level;
+            }
+        }
+        Event.Broadcast("Tick Player");
+        If Sensing.KeyPressed(r)
+        {
+            Sound.Play(Oops);
+            Call Reset Level;
+            Control.Wait(0);
+        }
+    }
+}
+
+
+//----- Broadcast received events -------------------------------------------------------------------------------------
+
+WhenBroadcastReceived(go)
+{
+    Motion.GoTo(_mouse_);
+    Yv = 0;
+}
+
+WhenBroadcastReceived(Reset Level)
+{
+    jumping = 0;
+    Motion.GoToXY(Check X, Check Y);
+    level = Check l;
+    Xv = 0;
+    Yv = 0;
+}
+
+WhenBroadcastReceived(Reset Level)
+{
+    Event.Broadcast("dad");
+}
+
+WhenBroadcastReceived(Tick1)
+{
+    If (Looks.Size() == 100)
+    {
+        Dx Plat = (Dx Plat / 1.6);
+        Dy Plat = (Dy Plat / 1.5);
+    }
+}
+
+WhenBroadcastReceived(Tick Player)
+{
+    If (Looks.Size() == 100)
+    {
+        Call Movement (LR);
+        Call Movement (UD);
+        falling += 1;
+        Call Next Level scenechange(1) if((Motion.XPosition() > 236)) goto(-236)(Motion.YPosition());
+        Call Next Level scenechange(-1) if((Motion.XPosition() < -236)) goto(236)(Motion.YPosition());
+        Call Next Level scenechange(100) if((Motion.YPosition() > 170)) goto(Motion.XPosition())(-160);
+        Call Next Level scenechange(-100) if((Motion.YPosition() < -170)) goto(Motion.XPosition())(170);
+        Call WiddleOut(Motion.XPosition())(Motion.YPosition())(17);
+        Looks.SwitchCostumeTo(costume1);
+    }
+}
+
+
+//----- Start as clone ------------------------------------------------------------------------------------------------
+
+Control.WhenIStartAsClone()
+{
+    Looks.SetSizeTo(99);
+    Repeat (6)
+    {
+        Looks.ChengeSizeBy(-7);
+        Looks.ChangeEffectBy(GHOST, 25);
+    }
+    Control.DeleteThisClone();
+}
+
+
+//----- Custom blocks -------------------------------------------------------------------------------------------------
+
+Define Check Touch. (warp=true)
+{
+    touch = 0;
+    If (Sensing.TouchingObject(Platforms) Or Sensing.TouchingObject(Moving Platforms))
+    {
+        touch = 1;
+        Stop(this script);
+    }
+    touch = 0;
+    If Sensing.TouchingObject(Jump Through)
+    {
+        If (jt < 1)
+        {
+            Motion.ChangeYBy(-7);
+            Looks.SwitchCostumeTo(costume3);
+            If Sensing.TouchingObject(Jump Through)
+            {
+                touch = 1;
+            }
+            Else
+            {
+                jt = 1;
+            }
+            Motion.ChangeYBy(7);
+        }
+    }
+    Else
+    {
+        jt = 0;
+    }
+    Looks.SwitchCostumeTo(costume2);
+}
+
+Define Movement (LR) (warp=true)
+{
+    If ((Sensing.KeyPressed(left arrow) Or Sensing.KeyPressed(a)) Or (Sensing.MouseDown() And (Sensing.MouseX() < -160)))
+    {
+        Xv += -1;
+    }
+    If (((Sensing.KeyPressed(right arrow) Or Sensing.KeyPressed(d)) Or (Sensing.MouseDown() And (Sensing.MouseX() > 160))) And ((hover < 1) Or (Sensing.KeyPressed(right arrow) Or Sensing.KeyPressed(d))))
+    {
+        Xv += 1;
+    }
+    Motion.ChangeXBy(Xv);
+    Call Check Touch.;
+    If (touch == 1)
+    {
+        Call Upwards;
+    }
+    Xv = (Xv / 1.16);
+}
+
+Define Movement (UD) (warp=true)
+{
+    Repeat (5)
+    {
+        Motion.ChangeYBy((Yv / 5));
+        Call Check Touch.;
+        If (touch == 1)
+        {
+            count = 0;
+            Call WiddleOut(Motion.XPosition())(Motion.YPosition())(((abs(Xv) + abs(Yv)) + 9));
+            Call Check Touch.;
+            If (touch == 1)
+            {
+                Sound.Play(Oops);
+                Call Reset Level;
+                Control.Wait(0);
+            }
+            If (falling > 4)
+            {
+                Sound.Play(74921__robinhood76__01102-small-sword-tinkle5);
+            }
+            If (Yv < 0)
+            {
+                falling = 0;
+                Yv = (Yv / 2);
+                Call Roll;
+            }
+            Else
+            {
+                Yv = -1;
+            }
+        }
+        If ((Sensing.KeyPressed(w) Or Sensing.KeyPressed(up arrow)) Or ((Sensing.MouseY() > 67) And Sensing.MouseDown()))
+        {
+            If ((falling < 3) And (jumping == 0))
+            {
+                Sound.Play(blip);
+                Yv = 10;
+                falling = 2;
+                jumping = 1;
+            }
+        }
+        Else
+        {
+            jumping = 0;
+        }
+        If (Yv > 4)
+        {
+            If ((Sensing.KeyPressed(w) Or Sensing.KeyPressed(up arrow)) Or ((Sensing.MouseY() > 67) And Sensing.MouseDown()))
+            {
+                Yv += 0.08;
+            }
+            Else
+            {
+                Yv += 0.02;
+            }
+        }
+    }
+    Yv += -1;
+}
+
+Define Next Level scenechange(string ) if(bool boolean) goto(string x)(string y) (warp=false)
+{
+    If boolean
+    {
+        level += ;
+        Motion.GoToXY(x, y);
+        Event.Broadcast("dad");
+    }
+}
+
+Define Reset Level (warp=false)
+{
+    Looks.SetSizeTo(100);
+    Event.Broadcast("Reset Level");
+    Control.Wait(0);
+}
+
+Define Roll (warp=true)
+{
+    Motion.ChangeXBy(1);
+    Motion.ChangeYBy(-2);
+    Call Check Touch.;
+    If (Not ((touch == 1)))
+    {
+        falling = 3;
+        Xv += 1;
+        Stop(this script);
+    }
+    Motion.ChangeXBy(-1);
+    Motion.ChangeYBy(2);
+    Motion.ChangeXBy(-1);
+    Motion.ChangeYBy(-2);
+    Call Check Touch.;
+    If (Not ((touch == 1)))
+    {
+        falling = 3;
+        Xv += -1;
+        Stop(this script);
+    }
+    Motion.ChangeXBy(1);
+    Motion.ChangeYBy(2);
+}
+
+Define Upwards (warp=true)
+{
+    Repeat (3)
+    {
+        Motion.ChangeYBy(1);
+        Call Check Touch.;
+        If (Not ((touch == 1)))
+        {
+            Stop(this script);
+        }
+        Xv = (Xv / 1.2);
+    }
+    count = 0;
+    Call Check Touch.;
+    Repeat Until ((Not ((Not ((touch == 1))))) Or (count > 2))
+    {
+        Motion.ChangeXBy((Xv / (0 - abs(Xv))));
+        count += 1;
+        Call Check Touch.;
+    }
+    Call WiddleOut(Motion.XPosition())(Motion.YPosition())(3);
+    Xv = 0;
+}
+
+Define WiddleOut(string x)(string y)(string m) (warp=true)
+{
+    Motion.PointInDirection(0);
+    count = 0;
+    Call Check Touch.;
+    If (Not ((touch == 1)))
+    {
+        Stop(this script);
+    }
+    Repeat (m)
+    {
+        Repeat (8)
+        {
+            Motion.Move(count);
+            Call Check Touch.;
+            If (Not ((touch == 1)))
+            {
+                Stop(this script);
+            }
+            Motion.GoToXY(x, y);
+            Motion.TurnRight(45);
+        }
+        count += 1;
+    }
+}
+
+
+//----- Orphaned blocks -----------------------------------------------------------------------------------------------
+
+Check l = 0;
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+costume1.svg
+costume2.svg
+costume3.svg
+
+
+//----- Sounds --------------------------------------------------------------------------------------------------------
+
+74921__robinhood76__01102-small-sword-tinkle5.wav
+blip.wav
+Hi Na Tabla.wav
+nsmbwiiKey.wav
+Oops.wav
+Win.mp3

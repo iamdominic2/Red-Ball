@@ -1,0 +1,102 @@
+//----- Variables -----------------------------------------------------------------------------------------------------
+
+effect = 0
+sc = 511
+
+
+
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    level = 1;
+    effect = 0;
+    Looks.SetSizeTo(50);
+    Looks.Hide();
+    Call Spawn at xy(-174)(-144) scene(3);
+    Call Spawn at xy(134)(0) scene(103);
+    Call Spawn at xy(17)(-101) scene(101);
+    Call Spawn at xy(-150)(141) scene(202);
+    Call Spawn at xy(208)(-160) scene(304);
+    Call Spawn at xy(-151)(111) scene(207);
+    Call Spawn at xy(-187)(94) scene(308);
+    Call Spawn at xy(-160)(21) scene(309);
+    Call Spawn at xy(-199)(-88) scene(311);
+    Call Spawn at xy(229)(-112) scene(511);
+}
+
+
+//----- Start as clone ------------------------------------------------------------------------------------------------
+
+Control.WhenIStartAsClone()
+{
+    If (effect == 1)
+    {
+        Repeat (13)
+        {
+            Looks.ChengeSizeBy(7);
+            Looks.ChangeEffectBy(GHOST, 8);
+        }
+        Control.DeleteThisClone();
+    }
+    Else
+    {
+        Forever
+        {
+            Looks.SwitchCostumeTo(Flag);
+            Looks.Hide();
+            Control.Wait(0);
+            Repeat Until Sensing.TouchingObject(Ball)
+            {
+                If (level == sc)
+                {
+                    Looks.Show();
+                }
+                Else
+                {
+                    Looks.Hide();
+                }
+            }
+            Sound.Play(nsmbwiiKey);
+            effect = 1;
+            Control.CreateCloneOf(_myself_);
+            effect = 0;
+            Check X = Motion.XPosition();
+            Check Y = Motion.YPosition();
+            Check l = level;
+            Looks.SwitchCostumeTo(Flag2);
+            Repeat Until (Not ((Check l == sc)))
+            {
+                If (level == sc)
+                {
+                    Looks.Show();
+                }
+                Else
+                {
+                    Looks.Hide();
+                }
+            }
+        }
+    }
+}
+
+
+//----- Custom blocks -------------------------------------------------------------------------------------------------
+
+Define Spawn at xy(string x)(string y) scene(string scene) (warp=false)
+{
+    sc = scene;
+    Motion.GoToXY(x, y);
+    Control.CreateCloneOf(_myself_);
+}
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+Flag.svg
+Flag2.svg
+
+
+//----- Sounds --------------------------------------------------------------------------------------------------------
+
+nsmbwiiKey.wav
